@@ -78,6 +78,7 @@ import Data.BigInt as BigInt
 import Data.Either (Either(Left, Right))
 import Data.Foldable (fold)
 import Data.HTTP.Method (Method(GET))
+import Data.Int (toNumber)
 import Data.Int as Int
 import Data.List (intercalate)
 import Data.Log.Level (LogLevel(Trace))
@@ -280,7 +281,8 @@ testPlan opts@{ tests } rt@{ wallets } =
                 , confirmAccess: confirmAccess extensionId re
                 , sign: sign extensionId password re
                 }
-            subscribeToBrowserEvents (Just $ Seconds 10.0) page
+            subscribeToBrowserEvents (Seconds <<< toNumber <$> opts.testTimeout)
+              page
               case _ of
                 ConfirmAccess -> launchAff_ someWallet.confirmAccess
                 Sign -> launchAff_ someWallet.sign
