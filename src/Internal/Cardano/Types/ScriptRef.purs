@@ -12,7 +12,7 @@ import Aeson
   , class EncodeAeson
   , JsonDecodeError(TypeMismatch, UnexpectedValue)
   , caseAesonObject
-  , encodeAeson'
+  , encodeAeson
   , fromString
   , toStringifiedNumbersJson
   , (.:)
@@ -42,9 +42,9 @@ instance Show ScriptRef where
   show = genericShow
 
 instance EncodeAeson ScriptRef where
-  encodeAeson' = case _ of
-    NativeScriptRef r -> encodeAeson' $ encodeTagged' "NativeScriptRef" r
-    PlutusScriptRef r -> encodeAeson' $ encodeTagged' "PlutusScriptRef" r
+  encodeAeson = case _ of
+    NativeScriptRef r -> encodeAeson $ encodeTagged' "NativeScriptRef" r
+    PlutusScriptRef r -> encodeAeson $ encodeTagged' "PlutusScriptRef" r
 
 instance DecodeAeson ScriptRef where
   decodeAeson = caseAesonObject (Left $ TypeMismatch "Expected object") $

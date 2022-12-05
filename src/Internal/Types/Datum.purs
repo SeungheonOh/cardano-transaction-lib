@@ -6,7 +6,7 @@ module Ctl.Internal.Types.Datum
 
 import Prelude
 
-import Aeson (class DecodeAeson, class EncodeAeson, encodeAeson')
+import Aeson (class DecodeAeson, class EncodeAeson, encodeAeson)
 import Aeson.Decode as Decode
 import Aeson.Encode ((>$<))
 import Aeson.Encode as Encode
@@ -34,7 +34,7 @@ derive newtype instance Ord Datum
 derive newtype instance ToData Datum
 
 instance EncodeAeson Datum where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     defer (const $ Encode.encode $ unwrap >$< Encode.value)
 
 instance DecodeAeson Datum where

@@ -88,7 +88,7 @@ import Aeson
   , caseAesonString
   , decodeAeson
   , encodeAeson
-  , encodeAeson'
+  , encodeAeson
   , getField
   , getFieldOptional
   , getFieldOptional'
@@ -477,8 +477,8 @@ instance DecodeAeson EraSummary where
     pure $ wrap { start, end, parameters }
 
 instance EncodeAeson EraSummary where
-  encodeAeson' (EraSummary { start, end, parameters }) =
-    encodeAeson'
+  encodeAeson (EraSummary { start, end, parameters }) =
+    encodeAeson
       { "start": start
       , "end": end
       , "parameters": parameters
@@ -511,8 +511,8 @@ instance DecodeAeson EraSummaryTime where
     pure $ wrap { time, slot, epoch }
 
 instance EncodeAeson EraSummaryTime where
-  encodeAeson' (EraSummaryTime { time, slot, epoch }) =
-    encodeAeson'
+  encodeAeson (EraSummaryTime { time, slot, epoch }) =
+    encodeAeson
       { "time": time
       , "slot": slot
       , "epoch": epoch
@@ -577,8 +577,8 @@ slotLengthFactor :: Number
 slotLengthFactor = 1e3
 
 instance EncodeAeson EraSummaryParameters where
-  encodeAeson' (EraSummaryParameters { epochLength, slotLength, safeZone }) =
-    encodeAeson'
+  encodeAeson (EraSummaryParameters { epochLength, slotLength, safeZone }) =
+    encodeAeson
       { "epochLength": epochLength
       , "slotLength": slotLength
       , "safeZone": safeZone
@@ -1383,8 +1383,8 @@ derive newtype instance Show AdditionalUtxoSet
 type OgmiosUtxoMap = Map OgmiosTxOutRef OgmiosTxOut
 
 instance EncodeAeson AdditionalUtxoSet where
-  encodeAeson' (AdditionalUtxoSet m) =
-    encodeAeson' $ encode <$> utxos
+  encodeAeson (AdditionalUtxoSet m) =
+    encodeAeson $ encode <$> utxos
 
     where
     utxos :: Array (OgmiosTxOutRef /\ OgmiosTxOut)

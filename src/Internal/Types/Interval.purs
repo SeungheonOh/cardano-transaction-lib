@@ -73,7 +73,7 @@ import Aeson
   , aesonNull
   , decodeAeson
   , encodeAeson
-  , encodeAeson'
+  , encodeAeson
   , getField
   , isNull
   )
@@ -339,7 +339,7 @@ instance (FromData a, Ord a, Ring a) => FromData (Interval a) where
   fromData _ = Nothing
 
 instance (EncodeAeson a, Ord a, Semiring a) => EncodeAeson (Interval a) where
-  encodeAeson' = encodeAeson' <<< intervalToHaskInterval
+  encodeAeson = encodeAeson <<< intervalToHaskInterval
 
 instance (DecodeAeson a, Ord a, Ring a) => DecodeAeson (Interval a) where
   decodeAeson a = do
@@ -630,23 +630,23 @@ slotToPosixTimeErrorStr :: String
 slotToPosixTimeErrorStr = "slotToPosixTimeError"
 
 instance EncodeAeson SlotToPosixTimeError where
-  encodeAeson' (CannotFindSlotInEraSummaries slot) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (CannotFindSlotInEraSummaries slot) =
+    encodeAeson $ mkErrorRecord
       slotToPosixTimeErrorStr
       "cannotFindSlotInEraSummaries"
       [ slot ]
-  encodeAeson' (StartingSlotGreaterThanSlot slot) = do
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (StartingSlotGreaterThanSlot slot) = do
+    encodeAeson $ mkErrorRecord
       slotToPosixTimeErrorStr
       "startingSlotGreaterThanSlot"
       [ slot ]
-  encodeAeson' (EndTimeLessThanTime absTime) = do
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (EndTimeLessThanTime absTime) = do
+    encodeAeson $ mkErrorRecord
       slotToPosixTimeErrorStr
       "endTimeLessThanTime"
       [ absTime ]
-  encodeAeson' CannotGetBigIntFromNumber = do
-    encodeAeson' $ mkErrorRecord
+  encodeAeson CannotGetBigIntFromNumber = do
+    encodeAeson $ mkErrorRecord
       slotToPosixTimeErrorStr
       "cannotGetBigIntFromNumber"
       aesonNull
@@ -867,33 +867,33 @@ posixTimeToSlotErrorStr :: String
 posixTimeToSlotErrorStr = "posixTimeToSlotError"
 
 instance EncodeAeson PosixTimeToSlotError where
-  encodeAeson' (CannotFindTimeInEraSummaries absTime) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (CannotFindTimeInEraSummaries absTime) =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "cannotFindTimeInEraSummaries"
       [ absTime ]
-  encodeAeson' (PosixTimeBeforeSystemStart posixTime) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (PosixTimeBeforeSystemStart posixTime) =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "posixTimeBeforeSystemStart"
       [ posixTime ]
-  encodeAeson' (StartTimeGreaterThanTime absTime) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (StartTimeGreaterThanTime absTime) =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "startTimeGreaterThanTime"
       [ absTime ]
-  encodeAeson' (EndSlotLessThanSlotOrModNonZero slot modTime) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (EndSlotLessThanSlotOrModNonZero slot modTime) =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "endSlotLessThanSlotOrModNonZero"
       [ encodeAeson slot, encodeAeson modTime ]
-  encodeAeson' CannotGetBigIntFromNumber' =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson CannotGetBigIntFromNumber' =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "cannotGetBigIntFromNumber'"
       aesonNull
-  encodeAeson' CannotGetBigNumFromBigInt' =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson CannotGetBigNumFromBigInt' =
+    encodeAeson $ mkErrorRecord
       posixTimeToSlotErrorStr
       "cannotGetBigNumFromBigInt'"
       aesonNull
@@ -1144,7 +1144,7 @@ derive instance Functor HaskInterval
 derive instance Newtype (HaskInterval a) _
 
 instance (EncodeAeson a) => EncodeAeson (HaskInterval a) where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     defer
       ( const $ Encode.encode $ unwrap >$<
           ( Encode.record
@@ -1162,7 +1162,7 @@ instance (DecodeAeson a) => DecodeAeson (HaskInterval a) where
       }
 
 instance (EncodeAeson a) => EncodeAeson (LowerBound a) where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     defer
       ( const $ Encode.encode $ (case _ of LowerBound a b -> (a /\ b)) >$<
           (Encode.tuple (Encode.value >/\< Encode.value))
@@ -1174,7 +1174,7 @@ instance (DecodeAeson a) => DecodeAeson (LowerBound a) where
     $ LowerBound </$\> Decode.value </*\> Decode.value
 
 instance (EncodeAeson a) => EncodeAeson (UpperBound a) where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     defer
       ( const $ Encode.encode $ (case _ of UpperBound a b -> (a /\ b)) >$<
           (Encode.tuple (Encode.value >/\< Encode.value))
@@ -1186,7 +1186,7 @@ instance (DecodeAeson a) => DecodeAeson (UpperBound a) where
     $ UpperBound </$\> Decode.value </*\> Decode.value
 
 instance (EncodeAeson a) => EncodeAeson (Extended a) where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     defer
       ( const $ case _ of
           NegInf -> encodeAeson { tag: "NegInf" }
@@ -1207,13 +1207,13 @@ toOnChainPosixTimeRangeErrorStr :: String
 toOnChainPosixTimeRangeErrorStr = "ToOnChainPosixTimeRangeError"
 
 instance EncodeAeson ToOnChainPosixTimeRangeError where
-  encodeAeson' (PosixTimeToSlotError' err) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (PosixTimeToSlotError' err) =
+    encodeAeson $ mkErrorRecord
       toOnChainPosixTimeRangeErrorStr
       "posixTimeToSlotError'"
       [ err ]
-  encodeAeson' (SlotToPosixTimeError' err) =
-    encodeAeson' $ mkErrorRecord
+  encodeAeson (SlotToPosixTimeError' err) =
+    encodeAeson $ mkErrorRecord
       toOnChainPosixTimeRangeErrorStr
       "slotToPosixTimeError'"
       [ err ]

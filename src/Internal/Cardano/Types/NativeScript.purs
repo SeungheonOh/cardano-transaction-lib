@@ -17,7 +17,7 @@ import Aeson
   , JsonDecodeError(TypeMismatch)
   , caseAesonObject
   , decodeAeson
-  , encodeAeson'
+  , encodeAeson
   , (.:)
   )
 import Aeson.Decode.Decoders (decodeArray)
@@ -94,11 +94,11 @@ instance DecodeAeson NativeScript where
       _ -> Left $ TypeMismatch ("Unknown tag" <> tag)
 
 instance EncodeAeson NativeScript where
-  encodeAeson' = case _ of
-    ScriptPubkey r -> encodeAeson' $ encodeTagged' "ScriptPubkey" r
-    ScriptAll r -> encodeAeson' $ encodeTagged' "ScriptAll" r
-    ScriptAny r -> encodeAeson' $ encodeTagged' "ScriptAny" r
-    ScriptNOfK n nativeScripts -> encodeAeson' $ encodeTagged' "ScriptNOfK"
+  encodeAeson = case _ of
+    ScriptPubkey r -> encodeAeson $ encodeTagged' "ScriptPubkey" r
+    ScriptAll r -> encodeAeson $ encodeTagged' "ScriptAll" r
+    ScriptAny r -> encodeAeson $ encodeTagged' "ScriptAny" r
+    ScriptNOfK n nativeScripts -> encodeAeson $ encodeTagged' "ScriptNOfK"
       { n, nativeScripts }
-    TimelockStart r -> encodeAeson' $ encodeTagged' "TimelockStart" r
-    TimelockExpiry r -> encodeAeson' $ encodeTagged' "TimelockExpiry" r
+    TimelockStart r -> encodeAeson $ encodeTagged' "TimelockStart" r
+    TimelockExpiry r -> encodeAeson $ encodeTagged' "TimelockExpiry" r

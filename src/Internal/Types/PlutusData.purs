@@ -16,7 +16,7 @@ import Aeson
   , JsonDecodeError(UnexpectedValue)
   , decodeAeson
   , encodeAeson
-  , encodeAeson'
+  , encodeAeson
   , toStringifiedNumbersJson
   , (.:)
   )
@@ -88,11 +88,11 @@ instance DecodeAeson PlutusData where
         Just res -> pure $ Bytes res
 
 instance EncodeAeson PlutusData where
-  encodeAeson' (Constr constr fields) = encodeAeson'
+  encodeAeson (Constr constr fields) = encodeAeson
     { "constr": encodeAeson constr
     , "fields": encodeAeson fields
     }
-  encodeAeson' (Map elems) = encodeAeson'
+  encodeAeson (Map elems) = encodeAeson
     { "map": encodeAeson $ map
         ( \(k /\ v) ->
             { "key": encodeAeson k
@@ -101,6 +101,6 @@ instance EncodeAeson PlutusData where
         )
         elems
     }
-  encodeAeson' (List elems) = encodeAeson' elems
-  encodeAeson' (Integer bi) = encodeAeson' bi
-  encodeAeson' (Bytes ba) = encodeAeson' ba
+  encodeAeson (List elems) = encodeAeson elems
+  encodeAeson (Integer bi) = encodeAeson bi
+  encodeAeson (Bytes ba) = encodeAeson ba

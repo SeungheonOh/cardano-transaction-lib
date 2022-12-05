@@ -5,7 +5,7 @@ module Ctl.Internal.Plutus.Types.Credential
 
 import Prelude
 
-import Aeson (class DecodeAeson, class EncodeAeson, encodeAeson')
+import Aeson (class DecodeAeson, class EncodeAeson, encodeAeson)
 import Aeson.Decode ((</$\>), (</*\>))
 import Aeson.Decode as Decode
 import Aeson.Encode ((>/\<))
@@ -68,7 +68,7 @@ instance
 
 -- NOTE: mlabs-haskell/purescript-bridge generated and applied here
 instance EncodeAeson Credential where
-  encodeAeson' = encodeAeson' <<<
+  encodeAeson = encodeAeson <<<
     ( defer $ const $ case _ of
         PubKeyCredential a -> Encode.encodeTagged "PubKeyCredential" a
           Encode.value
@@ -136,7 +136,7 @@ instance FromData StakingCredential where
 
 -- NOTE: mlabs-haskell/purescript-bridge generated and applied here
 instance EncodeAeson StakingCredential where
-  encodeAeson' = encodeAeson' <<< defer
+  encodeAeson = encodeAeson <<< defer
     ( const $ case _ of
         StakingHash a -> Encode.encodeTagged "StakingHash" a Encode.value
         StakingPtr ptr -> Encode.encodeTagged "StakingPtr"

@@ -98,7 +98,7 @@ import Aeson
   , JsonDecodeError(TypeMismatch)
   , decodeAeson
   , encodeAeson
-  , encodeAeson'
+  , encodeAeson
   )
 import Aeson.Encode (encodeTagged)
 import Control.Alt ((<|>))
@@ -147,7 +147,7 @@ derive instance Newtype BlockId _
 derive instance Generic BlockId _
 
 instance EncodeAeson BlockId where
-  encodeAeson' (BlockId id) = encodeAeson' (UInt.toNumber id)
+  encodeAeson (BlockId id) = encodeAeson (UInt.toNumber id)
 
 instance Show BlockId where
   show = genericShow
@@ -192,7 +192,7 @@ instance Show Address where
   show a = "(Address " <> addressBech32 a <> ")"
 
 instance EncodeAeson Address where
-  encodeAeson' = encodeAeson' <<< addressBech32
+  encodeAeson = encodeAeson <<< addressBech32
 
 showVia
   :: forall (a :: Type) (b :: Type). Show b => String -> (a -> b) -> a -> String
@@ -294,7 +294,7 @@ instance ToData RewardAddress where
   toData = toData <<< rewardAddressBytes
 
 instance EncodeAeson RewardAddress where
-  encodeAeson' = encodeAeson' <<< rewardAddressBech32
+  encodeAeson = encodeAeson <<< rewardAddressBech32
 
 instance DecodeAeson RewardAddress where
   decodeAeson = decodeAeson >=>
@@ -320,8 +320,8 @@ instance ToData StakeCredential where
   toData = toData <<< unwrap <<< stakeCredentialToBytes
 
 instance EncodeAeson StakeCredential where
-  encodeAeson' = withStakeCredential
-    { onKeyHash: encodeAeson', onScriptHash: encodeAeson' }
+  encodeAeson = withStakeCredential
+    { onKeyHash: encodeAeson, onScriptHash: encodeAeson }
 
 foreign import _addressFromBech32
   :: MaybeFfiHelper -> Bech32String -> Maybe Address
@@ -383,9 +383,9 @@ data NetworkId
   | MainnetId
 
 instance EncodeAeson NetworkId where
-  encodeAeson' = case _ of
-    TestnetId -> encodeAeson' $ encodeTagged "TestnetId" {} (Op encodeAeson)
-    MainnetId -> encodeAeson' $ encodeTagged "MainnetId" {} (Op encodeAeson)
+  encodeAeson = case _ of
+    TestnetId -> encodeAeson $ encodeTagged "TestnetId" {} (Op encodeAeson)
+    MainnetId -> encodeAeson $ encodeTagged "MainnetId" {} (Op encodeAeson)
 
 networkIdtoInt :: NetworkId -> Int
 networkIdtoInt = case _ of

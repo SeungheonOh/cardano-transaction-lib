@@ -18,7 +18,7 @@ import Aeson
   ( class DecodeAeson
   , class EncodeAeson
   , decodeAeson
-  , encodeAeson'
+  , encodeAeson
   , (.:)
   )
 import Aeson.Decode as Decode
@@ -63,7 +63,7 @@ instance Show PubKeyHash where
 
 -- NOTE: mlabs-haskell/purescript-bridge generated and applied here
 instance EncodeAeson PubKeyHash where
-  encodeAeson' x = encodeAeson' $ Encode.encode
+  encodeAeson x = encodeAeson $ Encode.encode
     (Encode.record { getPubKeyHash: Encode.value :: _ (Ed25519KeyHash) })
     { getPubKeyHash: unwrap x }
 
@@ -122,7 +122,7 @@ derive newtype instance Ord PaymentPubKeyHash
 derive newtype instance ToData PaymentPubKeyHash
 
 instance EncodeAeson PaymentPubKeyHash where
-  encodeAeson' (PaymentPubKeyHash pkh) = encodeAeson'
+  encodeAeson (PaymentPubKeyHash pkh) = encodeAeson
     { "unPaymentPubKeyHash": pkh }
 
 instance DecodeAeson PaymentPubKeyHash where
