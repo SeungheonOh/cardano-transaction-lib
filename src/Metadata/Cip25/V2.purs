@@ -61,13 +61,14 @@ import Metadata.MetadataType (class MetadataType)
 import Metadata.ToMetadata (class ToMetadata, toMetadata, anyToMetadata)
 import Partial.Unsafe (unsafePartial)
 import Plutus.Types.AssocMap (Map(Map), singleton) as AssocMap
-import Serialization.Hash (scriptHashFromBytes)
+import Serialization.Hash (scriptHashFromBytes, scriptHashToBytes)
 import ToData (class ToData, toData)
+import Types.ByteArray (byteArrayToHex, hexToByteArray)
 import Types.Int as Int
 import Types.PlutusData (PlutusData(Map, Integer))
-import Types.RawBytes (hexToRawBytes)
+import Types.RawBytes (hexToRawBytes, rawBytesToHex)
 import Types.Scripts (MintingPolicyHash)
-import Types.TokenName (mkTokenName)
+import Types.TokenName (getTokenName, mkTokenName)
 import Types.TransactionMetadata (TransactionMetadatum(Int, MetadataMap))
 
 -- | ```
@@ -234,9 +235,14 @@ instance ToMetadata Cip25Metadata where
       dataEntries =
         groupEntries entries <#>
           \group ->
-            (toMetadata <<< _.policyId <<< unwrap $ NonEmpty.head group) /\
+            ( toMetadata <<< rawBytesToHex <<< scriptHashToBytes <<< unwrap
+                <<< _.policyId
+                <<< unwrap $ NonEmpty.head group
+            ) /\
               (toMetadata <<< toArray <<< flip map group) \entry ->
-                (unwrap entry).assetName /\ metadataEntryToMetadata entry
+                ( byteArrayToHex $ getTokenName $ unwrap
+                    (unwrap entry).assetName
+                ) /\ metadataEntryToMetadata entry
       versionEntry = [ toMetadata "version" /\ toMetadata Cip25V2 ]
     in
       dataEntries <> versionEntry
@@ -257,8 +263,15 @@ instance FromMetadata Cip25Metadata where
               Just case assets of
                 MetadataMap mp2 ->
                   for (Map.toUnfoldable mp2) \(assetName /\ contents) ->
-                    metadataEntryFromMetadata <$> fromMetadata key
-                      <*> fromMetadata assetName
+                    metadataEntryFromMetadata
+                      <$>
+                        ( map wrap $ scriptHashFromBytes =<< hexToRawBytes =<<
+                            fromMetadata key
+                        )
+                      <*>
+                        ( map wrap $ mkTokenName =<< hexToByteArray =<<
+                            fromMetadata assetName
+                        )
                       <*> pure contents
                 _ -> Nothing
     wrap <$> sequence entries
