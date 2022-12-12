@@ -88,12 +88,12 @@ import Aeson
   , caseAesonString
   , decodeAeson
   , encodeAeson
-  , encodeAeson
   , getField
   , getFieldOptional
   , getFieldOptional'
   , isNull
   , isString
+  , partialFiniteNumber
   , stringifyAeson
   , toString
   , (.:)
@@ -527,7 +527,10 @@ derive instance Newtype RelativeTime _
 derive newtype instance Eq RelativeTime
 derive newtype instance Ord RelativeTime
 derive newtype instance DecodeAeson RelativeTime
-derive newtype instance EncodeAeson RelativeTime
+
+instance EncodeAeson RelativeTime where
+  encodeAeson (RelativeTime rt) =
+    encodeAeson $ unsafePartial partialFiniteNumber rt
 
 instance Show RelativeTime where
   show (RelativeTime rt) = showWithParens "RelativeTime" rt
@@ -603,7 +606,9 @@ derive instance Generic SlotLength _
 derive instance Newtype SlotLength _
 derive newtype instance Eq SlotLength
 derive newtype instance DecodeAeson SlotLength
-derive newtype instance EncodeAeson SlotLength
+instance EncodeAeson SlotLength where
+  encodeAeson (SlotLength sl) =
+    encodeAeson $ unsafePartial partialFiniteNumber sl
 
 instance Show SlotLength where
   show (SlotLength sl) = showWithParens "SlotLength" sl

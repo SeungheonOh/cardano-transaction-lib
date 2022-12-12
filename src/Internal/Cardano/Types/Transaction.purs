@@ -92,6 +92,7 @@ import Aeson
   , caseAesonString
   , decodeAeson
   , encodeAeson
+  , partialFiniteNumber
   )
 import Control.Alternative ((<|>))
 import Control.Apply (lift2)
@@ -524,9 +525,9 @@ instance Show Relay where
 
 instance EncodeAeson Relay where
   encodeAeson = case _ of
-    SingleHostAddr r -> encodeAeson $ encodeTagged' "SingleHostAddr" r
-    SingleHostName r -> encodeAeson $ encodeTagged' "SingleHostName" r
-    MultiHostName r -> encodeAeson $ encodeTagged' "MultiHostName" r
+    SingleHostAddr r -> encodeTagged' "SingleHostAddr" r
+    SingleHostName r -> encodeTagged' "SingleHostName" r
+    MultiHostName r -> encodeTagged' "MultiHostName" r
 
 newtype URL = URL String
 
@@ -599,8 +600,10 @@ instance Show MoveInstantaneousReward where
 
 instance EncodeAeson MoveInstantaneousReward where
   encodeAeson = case _ of
-    ToOtherPot r -> encodeAeson $ encodeTagged' "ToOtherPot" r
-    ToStakeCreds r -> encodeAeson $ encodeTagged' "ToStakeCreds" r
+    ToOtherPot r -> encodeTagged' "ToOtherPot" r
+      { pot = unsafePartial partialFiniteNumber r.pot }
+    ToStakeCreds r -> encodeTagged' "ToStakeCreds" r
+      { pot = unsafePartial partialFiniteNumber r.pot }
 
 type PoolRegistrationParams =
   { operator :: PoolPubKeyHash -- cwitness (cert)
@@ -663,17 +666,17 @@ instance Show Certificate where
 
 instance EncodeAeson Certificate where
   encodeAeson = case _ of
-    StakeRegistration r -> encodeAeson $ encodeTagged' "StakeRegistration" r
-    StakeDeregistration r -> encodeAeson $ encodeTagged' "StakeDeregistration"
+    StakeRegistration r -> encodeTagged' "StakeRegistration" r
+    StakeDeregistration r -> encodeTagged' "StakeDeregistration"
       r
-    StakeDelegation cred hash -> encodeAeson $ encodeTagged' "StakeDelegation"
+    StakeDelegation cred hash -> encodeTagged' "StakeDelegation"
       { stakeCredential: cred, ed25519KeyHash: hash }
-    PoolRegistration r -> encodeAeson $ encodeTagged' "PoolRegistration" r
-    PoolRetirement r -> encodeAeson $ encodeTagged' "PoolRetirement" r
-    GenesisKeyDelegation r -> encodeAeson $ encodeTagged'
+    PoolRegistration r -> encodeTagged' "PoolRegistration" r
+    PoolRetirement r -> encodeTagged' "PoolRetirement" r
+    GenesisKeyDelegation r -> encodeTagged'
       "GenesisKeyDelegation"
       r
-    MoveInstantaneousRewardsCert r -> encodeAeson $ encodeTagged'
+    MoveInstantaneousRewardsCert r -> encodeTagged'
       "MoveInstantaneousReward"
       r
 

@@ -109,51 +109,45 @@ let upstream =
         sha256:67cc3d4f0e8fb72bb1413ba94ddd72a3ceb0783eb725e3b22ad7568b3b581163
 
 let additions =
-      -- { aeson =
-      --   { dependencies =
-      --     [ "aff"
-      --     , "argonaut"
-      --     , "argonaut-codecs"
-      --     , "argonaut-core"
-      --     , "arrays"
-      --     , "bifunctors"
-      --     , "bigints"
-      --     , "bignumber"
-      --     , "const"
-      --     , "control"
-      --     , "effect"
-      --     , "either"
-      --     , "exceptions"
-      --     , "foldable-traversable"
-      --     , "foreign-object"
-      --     , "gen"
-      --     , "identity"
-      --     , "integers"
-      --     , "maybe"
-      --     , "newtype"
-      --     , "node-buffer"
-      --     , "node-fs-aff"
-      --     , "node-path"
-      --     , "nonempty"
-      --     , "numbers"
-      --     , "partial"
-      --     , "prelude"
-      --     , "quickcheck"
-      --     , "record"
-      --     , "sequences"
-      --     , "spec"
-      --     , "strings"
-      --     , "transformers"
-      --     , "tuples"
-      --     , "typelevel"
-      --     , "typelevel-prelude"
-      --     , "uint"
-      --     , "untagged-union"
-      --     ]
-      --   , repo = "https://github.com/kirill-havryliuk/purescript-aeson"
-      --   , version = "4798e586bbf3261aebc50c41b8e8fbdb5c3e908a"
-      --   }
-      { bignumber =
+      { aeson =
+        { dependencies =
+          [ "aff"
+          , "argonaut"
+          , "argonaut-codecs"
+          , "argonaut-core"
+          , "arrays"
+          , "bifunctors"
+          , "bigints"
+          , "bignumber"
+          , "const"
+          , "control"
+          , "effect"
+          , "either"
+          , "exceptions"
+          , "foldable-traversable"
+          , "foreign-object"
+          , "integers"
+          , "lists"
+          , "maybe"
+          , "mote"
+          , "numbers"
+          , "partial"
+          , "prelude"
+          , "quickcheck"
+          , "record"
+          , "sequences"
+          , "spec"
+          , "strings"
+          , "tuples"
+          , "typelevel"
+          , "typelevel-prelude"
+          , "uint"
+          , "untagged-union"
+          ]
+        , repo = "https://github.com/kirill-havryliuk/purescript-aeson"
+        , version = "0a7c4e65510c07f4bc54b275e07a3c5fb4cb9fa0"
+        }
+      , bignumber =
         { dependencies =
           [ "console"
           , "effect"
@@ -166,7 +160,7 @@ let additions =
           , "tuples"
           ]
         , repo = "https://github.com/mlabs-haskell/purescript-bignumber"
-        , version = "345ee09d314dda4a69f1c7c3c4a77519f585dad1"
+        , version = "58c51448be23c05caf51cde45bb3b09cc7169447"
         }
       -- , aeson-helpers =
       --   { dependencies =
@@ -300,5 +294,4 @@ let additions =
 
 in  (upstream // additions)
   with parsing.version = "v7.0.1"
-  with aeson         = ./../purescript-aeson/spago.dhall                as Location
   with aeson-helpers = ./../purescript-bridge-aeson-helpers/spago.dhall as Location

@@ -41,7 +41,7 @@ instance Show GeneralTransactionMetadata where
   show = genericShow
 
 instance EncodeAeson GeneralTransactionMetadata where
-  encodeAeson (GeneralTransactionMetadata m) = encodeAeson $ encodeMap m
+  encodeAeson (GeneralTransactionMetadata m) = encodeMap m
 
 -- This Semigroup instance simply takes the Last value for duplicate keys
 -- to avoid a Semigroup instance for TransactionMetadatum.
@@ -83,9 +83,9 @@ instance Show TransactionMetadatum where
 
 instance EncodeAeson TransactionMetadatum where
   encodeAeson = case _ of
-    MetadataMap m -> encodeAeson $ encodeTagged' "MetadataMap" $ encodeMap m
-    MetadataList arr -> encodeAeson $ encodeTagged' "MetadataList" arr
-    Int n -> encodeAeson $ encodeTagged' "Int" n
-    Bytes bytes -> encodeAeson $ encodeTagged' "Bytes" bytes
-    Text string -> encodeAeson $ encodeTagged' "Text" string
+    MetadataMap m -> encodeTagged' "MetadataMap" $ encodeMap m
+    MetadataList arr -> encodeTagged' "MetadataList" arr
+    Int n -> encodeTagged' "Int" n
+    Bytes bytes -> encodeTagged' "Bytes" bytes
+    Text string -> encodeTagged' "Text" string
 

@@ -95,10 +95,10 @@ instance DecodeAeson NativeScript where
 
 instance EncodeAeson NativeScript where
   encodeAeson = case _ of
-    ScriptPubkey r -> encodeAeson $ encodeTagged' "ScriptPubkey" r
-    ScriptAll r -> encodeAeson $ encodeTagged' "ScriptAll" r
-    ScriptAny r -> encodeAeson $ encodeTagged' "ScriptAny" r
-    ScriptNOfK n nativeScripts -> encodeAeson $ encodeTagged' "ScriptNOfK"
+    ScriptPubkey r -> encodeTagged' "ScriptPubkey" r
+    ScriptAll r -> encodeTagged' "ScriptAll" r
+    ScriptAny r -> encodeTagged' "ScriptAny" r
+    ScriptNOfK n nativeScripts -> encodeTagged' "ScriptNOfK"
       { n, nativeScripts }
-    TimelockStart r -> encodeAeson $ encodeTagged' "TimelockStart" r
-    TimelockExpiry r -> encodeAeson $ encodeTagged' "TimelockExpiry" r
+    TimelockStart r -> encodeTagged' "TimelockStart" r
+    TimelockExpiry r -> encodeTagged' "TimelockExpiry" r

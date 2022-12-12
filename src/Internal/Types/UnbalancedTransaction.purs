@@ -52,8 +52,8 @@ derive instance Generic ScriptDatum _
 
 instance EncodeAeson ScriptDatum where
   encodeAeson = case _ of
-    ScriptDatum r -> encodeAeson $ encodeTagged' "ScriptDatum" r
-    ScriptDatumHash r -> encodeAeson $ encodeTagged' "ScriptDatumHash" r
+    ScriptDatum r -> encodeTagged' "ScriptDatum" r
+    ScriptDatumHash r -> encodeTagged' "ScriptDatumHash" r
 
 instance Show ScriptDatum where
   show = genericShow

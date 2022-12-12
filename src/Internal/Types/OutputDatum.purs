@@ -62,9 +62,9 @@ instance FromData OutputDatum where
 
 instance EncodeAeson OutputDatum where
   encodeAeson = case _ of
-    NoOutputDatum -> encodeAeson $ encodeTagged' "NoOutputDatum" {}
-    OutputDatumHash r -> encodeAeson $ encodeTagged' "OutputDatumHash" r
-    OutputDatum r -> encodeAeson $ encodeTagged' "OutputDatum" r
+    NoOutputDatum -> encodeTagged' "NoOutputDatum" {}
+    OutputDatumHash r -> encodeTagged' "OutputDatumHash" r
+    OutputDatum r -> encodeTagged' "OutputDatum" r
 
 instance DecodeAeson OutputDatum where
   decodeAeson = caseAesonObject (Left $ TypeMismatch "Expected object") $

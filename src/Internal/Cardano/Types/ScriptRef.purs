@@ -43,8 +43,8 @@ instance Show ScriptRef where
 
 instance EncodeAeson ScriptRef where
   encodeAeson = case _ of
-    NativeScriptRef r -> encodeAeson $ encodeTagged' "NativeScriptRef" r
-    PlutusScriptRef r -> encodeAeson $ encodeTagged' "PlutusScriptRef" r
+    NativeScriptRef r -> encodeTagged' "NativeScriptRef" r
+    PlutusScriptRef r -> encodeTagged' "PlutusScriptRef" r
 
 instance DecodeAeson ScriptRef where
   decodeAeson = caseAesonObject (Left $ TypeMismatch "Expected object") $

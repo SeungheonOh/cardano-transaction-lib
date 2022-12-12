@@ -31,7 +31,7 @@ instance Show RedeemerTag where
 
 instance EncodeAeson RedeemerTag where
   encodeAeson = case _ of
-    Spend -> encodeAeson $ encodeTagged' "Spend" {}
-    Mint -> encodeAeson $ encodeTagged' "Mint" {}
-    Cert -> encodeAeson $ encodeTagged' "Cert" {}
-    Reward -> encodeAeson $ encodeTagged' "Reward" {}
+    Spend -> encodeTagged' "Spend" {}
+    Mint -> encodeTagged' "Mint" {}
+    Cert -> encodeTagged' "Cert" {}
+    Reward -> encodeTagged' "Reward" {}

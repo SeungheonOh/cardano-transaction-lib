@@ -147,7 +147,7 @@ derive instance Newtype BlockId _
 derive instance Generic BlockId _
 
 instance EncodeAeson BlockId where
-  encodeAeson (BlockId id) = encodeAeson (UInt.toNumber id)
+  encodeAeson (BlockId id) = encodeAeson id
 
 instance Show BlockId where
   show = genericShow
@@ -384,8 +384,8 @@ data NetworkId
 
 instance EncodeAeson NetworkId where
   encodeAeson = case _ of
-    TestnetId -> encodeAeson $ encodeTagged "TestnetId" {} (Op encodeAeson)
-    MainnetId -> encodeAeson $ encodeTagged "MainnetId" {} (Op encodeAeson)
+    TestnetId -> encodeTagged "TestnetId" {} (Op encodeAeson)
+    MainnetId -> encodeTagged "MainnetId" {} (Op encodeAeson)
 
 networkIdtoInt :: NetworkId -> Int
 networkIdtoInt = case _ of
