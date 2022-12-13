@@ -14,7 +14,7 @@
 
     # for the purescript project
     ogmios.url = "github:mlabs-haskell/ogmios/a7687bc03b446bc74564abe1873fbabfa1aac196";
-    plutip.url = "github:mlabs-haskell/plutip/e7eda09acdc4776e9aecb947ce577182b77df571";
+    plutip.url = "github:mlabs-haskell/plutip/1a25bf1e7dab83c9d5344592fcf5b7ac13225569";
 
     kupo-nixos.url = "github:mlabs-haskell/kupo-nixos/438799a67d0e6e17f21b7b3d0ae1b6325e505c61";
     kupo-nixos.inputs.kupo.follows = "kupo";
@@ -23,8 +23,6 @@
       url = "github:CardanoSolutions/kupo/v2.2.0";
       flake = false;
     };
-
-    cardano-wallet.url = "github:mlabs-haskell/cardano-wallet?rev=9d34b2633ace6aa32c1556d33c8c2df63dbc8f5b";
 
     ogmios-datum-cache.url = "github:mlabs-haskell/ogmios-datum-cache/ada4d2efdf7c4f308835099d0d30a91c1bd4a565";
 
