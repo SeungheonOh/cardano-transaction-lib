@@ -16,7 +16,7 @@
 
     # for the purescript project
     ogmios.url = "github:mlabs-haskell/ogmios/a7687bc03b446bc74564abe1873fbabfa1aac196";
-    plutip.url = "github:mlabs-haskell/plutip/1a25bf1e7dab83c9d5344592fcf5b7ac13225569";
+    plutip.url = "github:mlabs-haskell/plutip/a38be09032c938f51a963a78d3583e3b34da337d";
 
     kupo-nixos.url = "github:mlabs-haskell/kupo-nixos/438799a67d0e6e17f21b7b3d0ae1b6325e505c61";
     kupo-nixos.inputs.kupo.follows = "kupo";

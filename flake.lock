@@ -10097,17 +10097,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1670947991,
-        "narHash": "sha256-880vXMv/25QJHq1R08WWpNwYbJUmYLdM97XKGQJETbc=",
+        "lastModified": 1671023942,
+        "narHash": "sha256-IOH0eny/33gDe6JQUUnf/kL76eg1zrr9Tse/GGW6fPw=",
         "owner": "mlabs-haskell",
         "repo": "plutip",
-        "rev": "1a25bf1e7dab83c9d5344592fcf5b7ac13225569",
+        "rev": "a38be09032c938f51a963a78d3583e3b34da337d",
         "type": "github"
       },
       "original": {
         "owner": "mlabs-haskell",
         "repo": "plutip",
-        "rev": "1a25bf1e7dab83c9d5344592fcf5b7ac13225569",
+        "rev": "a38be09032c938f51a963a78d3583e3b34da337d",
         "type": "github"
       }
     },
