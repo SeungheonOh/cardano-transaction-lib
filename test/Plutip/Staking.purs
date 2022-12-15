@@ -151,7 +151,9 @@ suite = do
       test "PlutusScript" do
         let
           distribution = withStakeKey privateStakeKey
-            []
+            [ BigInt.fromInt 1_000_000_000
+            , BigInt.fromInt 2_000_000_000
+            ]
         runPlutipContract config distribution $ flip withKeyWallet do
           alicePkh /\ aliceStakePkh <- do
             Tuple
