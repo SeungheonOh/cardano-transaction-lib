@@ -23,7 +23,6 @@ import Contract.Monad
   , liftContractM
   , liftedM
   , runContract
-  , throwContractError
   )
 import Contract.PlutusData (PlutusData, toData)
 import Contract.ScriptLookups as Lookups
@@ -142,4 +141,3 @@ mkOneShotMintingPolicy unappliedMintingPolicy oref =
     mintingPolicyArgs = Array.singleton (toData oref)
   in
     applyArgs unappliedMintingPolicy mintingPolicyArgs
-
