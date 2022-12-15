@@ -532,7 +532,7 @@
           inputs.kupo-nixos.nixosModules.kupo
           {
             services.kupo.package =
-              inputs.kupo.packages.x86_64-linux."kupo";
+              inputs.kupo.packages.x86_64-linux."kupo:exe:kupo";
           }
           inputs.ogmios-datum-cache-nixos.nixosModules.ogmios-datum-cache
           {
