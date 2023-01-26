@@ -212,8 +212,8 @@ balanceTxWithConstraints unbalancedTx constraintsBuilder = do
       { strategy: selectionStrategy
       , unbalancedTx: unbalancedTx # _transaction' .~ unbalancedCollTx
       , changeAddress: changeAddr
-      , allUtxos
-      , utxos: availableUtxos
+      , allUtxos: availableUtxos
+      , utxos
       , certsFee
       }
   where
